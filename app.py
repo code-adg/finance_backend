@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/ask": {"origins": "*"}})
+
 
 # Initialize Gemini LLM with API Key
 def initialize_llm():
