@@ -13,7 +13,7 @@ CORS(app)
 
 # Initialize Gemini LLM with API Key
 def initialize_llm():
-    gemini_api_key ="AIzaSyAEzctJ3QK61LAUjmIoTEvDuTV9FFKt-vc"  # Use environment variable for security
+    gemini_api_key =os.getenv("GEMINI_API_KEY")  # Use environment variable for security
     model_name = "gemini-1.5-pro-latest"
     llm = ChatGoogleGenerativeAI(api_key=gemini_api_key, model=model_name)
     return llm
@@ -59,8 +59,8 @@ def handle_query():
     return jsonify({"response": response})
 
 # New route to fetch YouTube video links
-API_KEY ="AIzaSyB6AyY2a0AeZ5hk0jf_w64rMCrl5-WQKsg" # Use environment variable for security
-BASE_URL = 'https://www.googleapis.com/youtube/v3/search'
+youtubeApi=os.getenv("YOUTUBE_API_KEY") # Use environment variable for security
+baseUrl=os.getenv("BASE_URL")
 
 @app.route('/get_videos', methods=['POST'])
 def get_video_links():
@@ -73,14 +73,14 @@ def get_video_links():
     params = {
         'part': 'snippet',
         'q': f'{question} telugu',  # Add Telugu filter
-        'key': API_KEY,
+        'key': youtubeApi,
         'type': 'video',
         'maxResults': 5,
         'relevanceLanguage': 'te',  # Telugu language code
         'regionCode': 'IN'  # India region
     }
 
-    response = requests.get(BASE_URL, params=params)
+    response = requests.get(baseUrl, params=params)
     data = response.json()
 
     if 'error' in data:
